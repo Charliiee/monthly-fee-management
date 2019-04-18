@@ -12,9 +12,10 @@
       </q-toolbar>
 
         <q-tabs>
-          <q-route-tab to="/installments/date" icon="fas fa-calendar-day" />
-          <q-route-tab to="/installments/user" icon="fa fa-user" />
-          <q-route-tab to="/installments/status" icon="fa fa-barcode" />
+          <q-route-tab to="/payments/category" icon="fas fa-yin-yang" />
+          <q-route-tab to="/payments/date" icon="fas fa-calendar-day" />
+          <q-route-tab to="/payments/user" icon="fa fa-user" />
+          <q-route-tab to="/payments/status" icon="fa fa-barcode" />
         </q-tabs>
     </q-header>
 

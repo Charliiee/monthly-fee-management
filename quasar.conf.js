@@ -27,6 +27,7 @@ module.exports = function (ctx) {
 
       components: [
         'QAvatar',
+        'QSlideItem',
         'QBtn',
         'QDrawer',
         'QFooter',

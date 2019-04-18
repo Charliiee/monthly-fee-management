@@ -4,10 +4,11 @@ const routes = [
     path: '/',
     component: () => import('layouts/MyLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/Index.vue') },
-    ],
-  },
-];
+      { path: '', alias: 'home', component: () => import('pages/Index.vue') },
+      { path: 'payments/:groupBy', component: () => import('pages/Payments.vue'), props: true }
+    ]
+  }
+]
 
 // Always leave this as last one
 if (process.env.MODE !== 'ssr') {
