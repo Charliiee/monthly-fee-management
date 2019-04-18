@@ -15,12 +15,14 @@
       <q-item-section avatar>
         <q-icon color="primary" name="cell_wifi" />
       </q-item-section>
-      <q-item-section>Custom colors (red, purple)</q-item-section>
+      <q-item-section>{{ payment.modality }} {{ formatedPaymentDueDate }} - R$ {{ payment.amount }}</q-item-section>
     </q-item>
   </q-slide-item>
 </template>
 
 <script>
+import { date } from 'quasar'
+
 export default {
   name: 'Payment',
   props: ['payment'],
@@ -28,17 +30,21 @@ export default {
     return {}
   },
   computed: {
+    formatedPaymentDueDate () {
+      return date.formatDate(new Date(this.payment.dueDate), 'MM/YYYY')
+    },
     paymentStatus () {
       if (this.payment.paid) {
         return 'green'
       }
 
       // check if it's overdue
+      const dueDate = new Date(this.payment.dueDate)
       const today = new Date()
-      if (this.payment.dueDate < today) {
+      if (dueDate < today) {
         // check if overdue payment is within this month yet
-        if (this.payment.dueDate.getFullYear() === today.getFullYear() &&
-          this.payment.dueDate.getMonth() === today.getMonth()) {
+        if (dueDate.getFullYear() === today.getFullYear() &&
+          dueDate.getMonth() === today.getMonth()) {
           return 'amber'
         }
         return 'red'
@@ -62,5 +68,8 @@ export default {
 }
 .border-left.green {
   border-color: #4caf50;
+}
+.border-left.gray {
+  border-color: #cecece;
 }
 </style>
