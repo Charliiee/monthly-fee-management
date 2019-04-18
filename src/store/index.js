@@ -1,9 +1,9 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
+import Vue from 'vue'
+import Vuex from 'vuex'
 
-// import example from './module-example'
+import payment from './payment'
 
-Vue.use(Vuex);
+Vue.use(Vuex)
 
 /*
  * If not building with SSR mode, you can
@@ -18,8 +18,23 @@ export default function (/* { ssrContext } */) {
 
     // enable strict mode (adds overhead!)
     // for dev mode only
-    strict: process.env.DEV,
-  });
+    strict: process.env.DEV
+  })
 
-  return Store;
+  /*
+    if we want some HMR magic for it, we handle
+    the hot update like below. Notice we guard this
+    code with "process.env.DEV" -- so this doesn't
+    get into our production build (and it shouldn't).
+  */
+  /* eslint-disable global-require */
+  if (process.env.DEV && module.hot) {
+    module.hot.accept(['./payment'], () => {
+      const newPayment = require('./payment').default
+      Store.hotUpdate({ modules: { payment: newPayment } })
+    })
+  }
+  /* eslint-disable global-require */
+
+  return Store
 }

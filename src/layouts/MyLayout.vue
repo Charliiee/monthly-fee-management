@@ -28,11 +28,11 @@
 <script>
 export default {
   name: 'MyLayout',
-  data() {
+  data () {
     return {
-    };
-  },
-};
+    }
+  }
+}
 </script>
 
 <style>
