@@ -58,6 +58,7 @@ export default {
       this.payments.filter(payment => this.selectedPayments.has(payment.id))
         .forEach(payment => {
           this.$store.dispatch('payment/updatePayment', { ...payment, paid })
+          this.selectedPayments.delete(payment.id)
         })
     }
   }

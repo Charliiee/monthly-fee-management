@@ -23,3 +23,15 @@ export function retrievePayments (context) {
       context.commit('retrievePayments', paymentsSorted)
     })
 }
+
+export function updatePayment (context, payment) {
+  db.collection('payments').doc(payment.id)
+    .set({
+      paid: payment.paid,
+      amount: payment.amount,
+      student: payment.student
+    }, { merge: true })
+    .then(() => {
+      context.commit('updatePayment', payment)
+    })
+}

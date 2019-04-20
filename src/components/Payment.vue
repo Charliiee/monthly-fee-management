@@ -1,6 +1,6 @@
 <template>
   <q-slide-item
-    @left="$emit('left', $event)"
+    @left="updatePayment"
     left-color="green"
     right-color="red"
     >
@@ -23,7 +23,7 @@
         <q-icon :name="modalityIcon" />
       </q-item-section>
       <q-item-section class="text-capitalize">{{ payment.student.name }}: {{ payment.modality }} {{ formatedPaymentDueDate }}</q-item-section>
-      <q-item-section side>R$ {{ payment.amount }}</q-item-section>
+      <q-item-section :class="{ 'text-white': active }" side>R$ {{ payment.amount }}</q-item-section>
     </q-item>
   </q-slide-item>
 </template>
@@ -80,6 +80,13 @@ export default {
       }
 
       return 'gray'
+    }
+  },
+  methods: {
+    updatePayment (details) {
+      this.payment.paid = true
+      this.$store.dispatch('payment/updatePayment', { ...this.payment })
+      details.reset()
     }
   }
 }
