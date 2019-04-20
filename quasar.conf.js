@@ -29,6 +29,7 @@ module.exports = function (ctx) {
         'QAvatar',
         'QSlideItem',
         'QBtn',
+        'QBtnGroup',
         'QDrawer',
         'QFooter',
         'QHeader',

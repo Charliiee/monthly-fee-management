@@ -12,6 +12,14 @@
       </payment>
 
     </q-list>
+
+    <div class="fixed-bottom column" v-show="selectedPayments.size">
+      <q-btn-group spread flat>
+        <q-btn color="green" label="Pago" icon="done" @click="updatePayments(true)" />
+        <q-btn color="red" label="Não Pago" icon="close" @click="updatePayments(false)" />
+      </q-btn-group>
+    </div>
+
   </q-page>
 </template>
 
@@ -45,8 +53,12 @@ export default {
       }
       this.selectedPayments = new Set(Array.from(this.selectedPayments))
     },
-    onLeft () {
-      console.log('left')
+    updatePayments (paid) {
+      // filter payments selected and update their paid status
+      this.payments.filter(payment => this.selectedPayments.has(payment.id))
+        .forEach(payment => {
+          this.$store.dispatch('payment/updatePayment', { ...payment, paid })
+        })
     }
   }
 }
