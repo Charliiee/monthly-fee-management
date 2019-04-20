@@ -1,4 +1,4 @@
-export function setPayments (state, payments) {
+export function retrievePayments (state, payments) {
   state.payments = payments
 }
 

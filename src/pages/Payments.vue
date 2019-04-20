@@ -23,6 +23,9 @@ export default {
 
     }
   },
+  created () {
+    this.$store.dispatch('payment/retrievePayments')
+  },
   computed: {
     ...mapGetters('payment', ['payments'])
   },
