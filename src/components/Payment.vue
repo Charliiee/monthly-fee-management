@@ -5,17 +5,13 @@
         <q-icon left name="done" /> Pago
       </div>
     </template>
-    <template v-slot:right>
-      <div class="row items-center">
-        Não Pago <q-icon right name="close" />
-      </div>
-    </template>
 
     <q-item class="border-left" :class="paymentStatus">
       <q-item-section avatar>
-        <q-icon color="primary" name="cell_wifi" />
+        <q-icon :name="modalityIcon" />
       </q-item-section>
-      <q-item-section>{{ payment.modality }} {{ formatedPaymentDueDate }} - R$ {{ payment.amount }}</q-item-section>
+      <q-item-section class="text-capitalize">{{ payment.student.name }}: {{ payment.modality }} {{ formatedPaymentDueDate }}</q-item-section>
+      <q-item-section side>R$ {{ payment.amount }}</q-item-section>
     </q-item>
   </q-slide-item>
 </template>
@@ -32,6 +28,18 @@ export default {
   computed: {
     formatedPaymentDueDate () {
       return date.formatDate(new Date(this.payment.dueDate), 'MM/YYYY')
+    },
+    modalityIcon () {
+      if (this.payment.modality === 'tai chi') {
+        return 'fas fa-yin-yang'
+      }
+      if (this.payment.modality === 'kung fu') {
+        return 'fas fa-torii-gate'
+      }
+      if (this.payment.modality === 'sanda') {
+        return 'fas fa-fist-raised'
+      }
+      return 'fas fa-grin-wink'
     },
     paymentStatus () {
       if (this.payment.paid) {
