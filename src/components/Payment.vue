@@ -1,12 +1,24 @@
 <template>
-  <q-slide-item @left="$emit('left')" @right="$emit('right')" left-color="green" right-color="red">
+  <q-slide-item
+    @left="$emit('left', $event)"
+    left-color="green"
+    right-color="red"
+    >
     <template v-slot:left>
       <div class="row items-center">
         <q-icon left name="done" /> Pago
       </div>
     </template>
 
-    <q-item class="border-left" :class="paymentStatus">
+    <q-item
+      clickable
+      v-ripple
+      :active="active"
+      @click="$emit('click', payment.id)"
+      active-class="bg-primary text-white"
+      class="border-left"
+      :class="paymentStatus"
+      >
       <q-item-section avatar>
         <q-icon :name="modalityIcon" />
       </q-item-section>
@@ -21,7 +33,16 @@ import { date } from 'quasar'
 
 export default {
   name: 'Payment',
-  props: ['payment'],
+  props: {
+    active: {
+      type: Boolean,
+      required: true
+    },
+    payment: {
+      type: Object,
+      required: true
+    }
+  },
   data () {
     return {}
   },
