@@ -10,6 +10,12 @@ const functions = require('firebase-functions')
 exports.addStudentPayments = functions.firestore
   .document('students/{studentId}')
   .onWrite((change, context) => {
+
+    // if student was deleted skip any payment action
+    if (!change.after.exists) {
+      return null
+    }
+
     // Retrieve the current and previous value
     const student = change.after.data()
     const previousStudentData = change.before.exists ? change.before.data() : { modality: [] }
@@ -24,7 +30,7 @@ exports.addStudentPayments = functions.firestore
     const newModalitySet = new Set(student.modality)
     const oldModalitySet = new Set(student.modality)
 
-    const allModalities = Array.from(new Set([ ...newModalities, ...oldModalitySet ]))
+    const allModalities = Array.from(new Set([ ...newModalitySet, ...oldModalitySet ]))
     allModalities.forEach((modality, index) => {
       // modality was removed
       const today = new Date()
