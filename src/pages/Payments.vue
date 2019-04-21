@@ -20,6 +20,40 @@
       </q-btn-group>
     </div>
 
+    <q-dialog v-model="studentForm" full-width persistent>
+      <student-form></student-form>
+    </q-dialog>
+
+    <q-dialog v-model="paymentForm">
+      <payment-form></payment-form>
+    </q-dialog>
+
+    <q-page-sticky position="bottom-right" :offset="[18, 18]">
+      <q-fab
+        icon="add"
+        direction="up"
+        color="primary"
+        >
+        <q-fab-action @click="studentForm = true" color="blue" icon="person_add">
+          <q-tooltip
+            anchor="center left"
+            self="center right"
+            transition-show="rotate"
+            transition-hide="rotate">
+            <span class="text-subtitle2">Adicionar Aluno</span>
+          </q-tooltip>
+        </q-fab-action>
+        <q-fab-action @click="paymentForm = true" color="blue" icon="add">
+          <q-tooltip
+            anchor="center left"
+            self="center right"
+            transition-show="rotate"
+            transition-hide="rotate">
+            <span class="text-subtitle2">Adicionar Cobranças</span>
+          </q-tooltip>
+        </q-fab-action>
+      </q-fab>
+    </q-page-sticky>
   </q-page>
 </template>
 
@@ -27,14 +61,20 @@
 import { mapGetters } from 'vuex'
 
 import Payment from '../components/Payment'
+import PaymentForm from '../components/PaymentForm'
+import StudentForm from '../components/StudentForm'
 
 export default {
   name: 'Payments',
   components: {
-    Payment
+    Payment,
+    PaymentForm,
+    StudentForm
   },
   data () {
     return {
+      paymentForm: false,
+      studentForm: false,
       selectedPayments: new Set([])
     }
   },

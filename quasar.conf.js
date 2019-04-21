@@ -27,13 +27,20 @@ module.exports = function (ctx) {
 
       components: [
         'QAvatar',
-        'QSlideItem',
         'QBtn',
         'QBtnGroup',
+        'QCard',
+        'QCardSection',
+        'QCardActions',
+        'QDialog',
         'QDrawer',
+        'QFab',
+        'QFabAction',
+        'QForm',
         'QFooter',
         'QHeader',
         'QIcon',
+        'QInput',
         'QItem',
         'QItemLabel',
         'QItemSection',
@@ -43,13 +50,17 @@ module.exports = function (ctx) {
         'QPageContainer',
         'QPageSticky',
         'QRouteTab',
+        'QSelect',
+        'QSlideItem',
         'QTab',
         'QTabs',
         'QToolbar',
         'QToolbarTitle',
+        'QTooltip',
       ],
 
       directives: [
+        'ClosePopup',
         'Ripple'
       ],
 

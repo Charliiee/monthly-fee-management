@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 import payment from './payment'
+import student from './student'
 
 Vue.use(Vuex)
 
@@ -13,7 +14,8 @@ Vue.use(Vuex)
 export default function (/* { ssrContext } */) {
   const Store = new Vuex.Store({
     modules: {
-      payment
+      payment,
+      student
     },
 
     // enable strict mode (adds overhead!)
@@ -29,9 +31,10 @@ export default function (/* { ssrContext } */) {
   */
   /* eslint-disable global-require */
   if (process.env.DEV && module.hot) {
-    module.hot.accept(['./payment'], () => {
+    module.hot.accept(['./payment', './student'], () => {
       const newPayment = require('./payment').default
-      Store.hotUpdate({ modules: { payment: newPayment } })
+      const newStudent = require('./student').default
+      Store.hotUpdate({ modules: { payment: newPayment, student: newStudent } })
     })
   }
   /* eslint-disable global-require */
