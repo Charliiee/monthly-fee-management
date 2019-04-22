@@ -106,10 +106,6 @@ export default {
         if (exists) {
           done()
         } else {
-          this.modalityOptions.push({
-            value: val.toLowerCase(),
-            label: val
-          })
           done(val, 'add-unique')
         }
       }
@@ -123,6 +119,10 @@ export default {
       this.$q.notify({
         message: 'Aluno cadastrado com sucesso!',
         color: 'green'
+      })
+      this.$q.notify({
+        message: `Gerando parcelas para ${this.name}...`,
+        color: 'blue'
       })
     }
   }
