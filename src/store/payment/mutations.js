@@ -4,7 +4,9 @@ export function retrievePayments (state, payments) {
 
 export function updatePayment (state, payment) {
   const index = state.payments.findIndex(item => item.id === payment.id)
-  state.payments.splice(index, 1, { ...payment })
+  if (index >= 0) {
+    state.payments.splice(index, 1, { ...payment })
+  }
 }
 
 export function addPayment (state, payment) {

@@ -10,6 +10,7 @@ export function retrievePayments (context) {
           id: doc.id,
           dueDate: docData.dueDate,
           paid: docData.paid,
+          canceled: docData.canceled,
           amount: docData.amount,
           modality: docData.modality,
           student: docData.student

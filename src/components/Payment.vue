@@ -67,6 +67,10 @@ export default {
         return 'green'
       }
 
+      if (this.payment.canceled) {
+        return 'bg-grey-4 gray'
+      }
+
       // check if it's overdue
       const dueDate = this.payment.dueDate.toDate()
       const today = new Date()
