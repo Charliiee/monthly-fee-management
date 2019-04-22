@@ -39,12 +39,6 @@ exports.addStudentPayments = functions.firestore
     const student = change.after.data()
     const previousStudentData = change.before.exists ? change.before.data() : { modality: [] }
 
-    // We'll only update payments if modality has changed.
-    // This is crucial to prevent infinite loops.
-    if (student.modality.length === previousStudentData.modality.length) {
-      return null
-    }
-
     // Create sets of old and new modality lists
     const newModalitySet = new Set(student.modality)
     const oldModalitySet = new Set(previousStudentData.modality)
@@ -57,7 +51,8 @@ exports.addStudentPayments = functions.firestore
       const payments = db.collection('payments')
         .where('student.id', '==', studentId)
         .where('dueDate', '>=', dueDate)
-        .where('paid', '==', 'false')
+        .where('modality', '==', modality)
+        .where('paid', '==', false)
 
       if (!newModalitySet.has(modality)) {
         return payments.get()
