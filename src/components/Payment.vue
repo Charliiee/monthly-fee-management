@@ -22,7 +22,7 @@
       <q-item-section avatar>
         <q-icon :name="modalityIcon" />
       </q-item-section>
-      <q-item-section class="text-capitalize">{{ payment.student.name }}: {{ payment.modality }} - {{ formatedPaymentDueDate }}</q-item-section>
+      <q-item-section class="text-capitalize">{{ payment.student.name }}: {{ payment.modality }} - {{ formattedDueDate }}</q-item-section>
       <q-item-section :class="{ 'text-white': active }" side>R$ {{ payment.amount }}</q-item-section>
     </q-item>
   </q-slide-item>
@@ -47,8 +47,8 @@ export default {
     return {}
   },
   computed: {
-    formatedPaymentDueDate () {
-      return date.formatDate(this.payment.dueDate.toDate(), 'MM/YYYY')
+    formattedDueDate () {
+      return date.formatDate(this.payment.dueDate.toDate(), 'MMM YYYY')
     },
     modalityIcon () {
       if (this.payment.modality === 'tai chi') {
@@ -60,7 +60,7 @@ export default {
       if (this.payment.modality === 'sanda') {
         return 'fas fa-fist-raised'
       }
-      return 'fas fa-grin-wink'
+      return 'fas fa-child'
     },
     paymentStatus () {
       if (this.payment.paid) {
