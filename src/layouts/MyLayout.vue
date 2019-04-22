@@ -4,11 +4,14 @@
     <q-header reveal elevated class="bg-primary text-white">
       <q-toolbar>
         <q-toolbar-title>
-          <q-avatar>
-            <img src="https://cdn.quasar-framework.org/logo/svg/quasar-logo.svg">
-          </q-avatar>
-          Title
+          <q-avatar icon="fas fa-hand-holding-usd" size="60px" />
+          Controle de mensalidades
         </q-toolbar-title>
+
+        <q-tabs align="left">
+          <q-route-tab to="/payments" icon="fas fa-file-invoice-dollar" />
+          <q-route-tab to="/students" icon="fa fa-user" />
+        </q-tabs>
       </q-toolbar>
 
         <q-tabs>
