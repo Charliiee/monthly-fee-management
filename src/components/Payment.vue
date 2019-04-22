@@ -22,7 +22,7 @@
       <q-item-section avatar>
         <q-icon :name="modalityIcon" />
       </q-item-section>
-      <q-item-section class="text-capitalize">{{ payment.student.name }}: {{ payment.modality }} {{ formatedPaymentDueDate }}</q-item-section>
+      <q-item-section class="text-capitalize">{{ payment.student.name }}: {{ payment.modality }} - {{ formatedPaymentDueDate }}</q-item-section>
       <q-item-section :class="{ 'text-white': active }" side>R$ {{ payment.amount }}</q-item-section>
     </q-item>
   </q-slide-item>
@@ -48,7 +48,7 @@ export default {
   },
   computed: {
     formatedPaymentDueDate () {
-      return date.formatDate(new Date(this.payment.dueDate), 'MM/YYYY')
+      return date.formatDate(this.payment.dueDate.toDate(), 'MM/YYYY')
     },
     modalityIcon () {
       if (this.payment.modality === 'tai chi') {
@@ -68,7 +68,7 @@ export default {
       }
 
       // check if it's overdue
-      const dueDate = new Date(this.payment.dueDate)
+      const dueDate = this.payment.dueDate.toDate()
       const today = new Date()
       if (dueDate < today) {
         // check if overdue payment is within this month yet
@@ -84,6 +84,9 @@ export default {
   },
   methods: {
     updatePayment (details) {
+      if (this.payment.paid) {
+        return
+      }
       this.payment.paid = true
       this.$store.dispatch('payment/updatePayment', { ...this.payment })
       details.reset()
@@ -94,7 +97,7 @@ export default {
 
 <style scoped>
 .border-left {
-  border-left: 4px solid;
+  border-left: 8px solid;
 }
 .border-left.red {
   border-color: #f44336;
