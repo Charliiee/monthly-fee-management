@@ -60,7 +60,7 @@
 
     <q-card-actions align="right" class="text-primary">
       <q-btn flat label="Cancelar" v-close-popup />
-      <q-btn @click="addStudent" flat label="Adicionar Aluno" v-close-popup />
+      <q-btn @click="saveStudent" flat :label="addStudentLabel" v-close-popup />
     </q-card-actions>
   </q-card>
 </template>
@@ -68,6 +68,7 @@
 <script>
 export default {
   name: 'StudentForm',
+  props: ['student'],
   data () {
     return {
       name: '',
@@ -93,9 +94,17 @@ export default {
       ]
     }
   },
+  created () {
+    this.name = this.student.name
+    this.document = this.student.document
+    this.modalities = this.student.modality || []
+  },
   computed: {
     documentMask () {
       return this.document.length <= 9 ? 'NN.NNN.NNN-NN' : 'NNN.NNN.NNN-NN'
+    },
+    addStudentLabel () {
+      return this.student.id ? 'Salvar Aluno' : 'Adicionar Aluno'
     }
   },
   methods: {
@@ -110,20 +119,40 @@ export default {
         }
       }
     },
-    addStudent () {
-      this.$store.dispatch('student/addStudent', {
-        name: this.name,
-        document: this.document,
-        modality: this.modalities
-      })
+    saveStudent () {
+      if (this.student.id) {
+        this.$store.dispatch('student/updateStudent', {
+          ...this.student,
+          name: this.name,
+          document: this.document,
+          modality: this.modalities
+        })
+      } else {
+        this.$store.dispatch('student/addStudent', {
+          name: this.name,
+          document: this.document,
+          modality: this.modalities
+        })
+      }
+
       this.$q.notify({
-        message: 'Aluno cadastrado com sucesso!',
+        message: 'Aluno salvo com sucesso!',
         color: 'green'
       })
-      this.$q.notify({
-        message: `Gerando parcelas para ${this.name}...`,
-        color: 'blue'
-      })
+
+      if (this.modalities.length !== this.student.modality.length) {
+        this.$q.notify({
+          message: `Gerando parcelas para ${this.name}...`,
+          color: 'blue'
+        })
+      }
+    }
+  },
+  watch: {
+    student (student) {
+      this.name = this.student.name
+      this.document = this.student.document
+      this.modalities = this.student.modality || []
     }
   }
 }
