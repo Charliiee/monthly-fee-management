@@ -1,5 +1,10 @@
 const functions = require('firebase-functions')
 
+const admin = require('firebase-admin')
+admin.initializeApp();
+
+const db = admin.firestore()
+
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
 //
@@ -11,9 +16,23 @@ exports.addStudentPayments = functions.firestore
   .document('students/{studentId}')
   .onWrite((change, context) => {
 
+    const studentId = context.params.studentId
+
     // if student was deleted skip any payment action
     if (!change.after.exists) {
-      return null
+      return db.collection('payments')
+        .where('student.id', '==', studentId)
+        .get()
+        .then(querySnapshot => {
+          const batch = db.batch()
+
+          // Update payment status to canceled
+          querySnapshot.forEach(doc => {
+            batch.delete(doc.ref)
+          })
+
+          return batch.commit()
+        })
     }
 
     // Retrieve the current and previous value
@@ -28,22 +47,22 @@ exports.addStudentPayments = functions.firestore
 
     // Create sets of old and new modality lists
     const newModalitySet = new Set(student.modality)
-    const oldModalitySet = new Set(student.modality)
+    const oldModalitySet = new Set(previousStudentData.modality)
 
     const allModalities = Array.from(new Set([ ...newModalitySet, ...oldModalitySet ]))
     allModalities.forEach((modality, index) => {
       // modality was removed
       const today = new Date()
       const dueDate = new Date(today.getFullYear(), today.getMonth(), 1)
-      const payments = functions.firestore.collections('payments')
-        .where('student.id', '==', student.id)
+      const payments = db.collection('payments')
+        .where('student.id', '==', studentId)
         .where('dueDate', '>=', dueDate)
         .where('paid', '==', 'false')
 
       if (!newModalitySet.has(modality)) {
         return payments.get()
           .then(querySnapshot => {
-            const batch = functions.firestore.batch()
+            const batch = db.batch()
 
             // Update payment status to canceled
             querySnapshot.forEach(doc => {
@@ -64,7 +83,7 @@ exports.addStudentPayments = functions.firestore
               return false // paymentsAlreadyAdded
             }
 
-            const batch = functions.firestore.batch()
+            const batch = db.batch()
 
             // Update payment status to canceled
             querySnapshot.forEach(doc => {
@@ -79,16 +98,15 @@ exports.addStudentPayments = functions.firestore
               const amount = index === 0 ? 100 : 50
 
               // getMonth() refers to months from 0 to 11
-              const remainingMonths = 11 - today.getMonth()
-              for (var i = 0; i < remainingMonths; i++) {
-                functions.firestore.collections('payments').add({
-                  dueDate,
+              for (var month = today.getMonth(); month <= 11; month++) {
+                db.collection('payments').add({
                   modality,
                   amount,
+                  dueDate: new Date(today.getFullYear(), month, 20),
                   paid: false,
                   canceled: false,
                   student: {
-                    id: student.id,
+                    id: studentId,
                     name: student.name
                   }
                 })
@@ -107,6 +125,7 @@ exports.updateStudentPayments = functions.firestore
   .document('students/{studentId}')
   .onUpdate((change, context) => {
     // Retrieve the current and previous value
+    const studentId = context.params.studentId
     const student = change.after.data()
     const previousStudentData = change.before.data()
 
@@ -118,11 +137,11 @@ exports.updateStudentPayments = functions.firestore
 
     // Update 'student' field in all payments
     // referencing this student
-    return functions.firestore.collections('payments')
-      .where('student.id', '==', student.id)
+    return db.collection('payments')
+      .where('student.id', '==', studentId)
       .get()
       .then(querySnapshot => {
-        const batch = functions.firestore.batch()
+        const batch = db.batch()
 
         // Update payment status to canceled
         querySnapshot.forEach(doc => {
