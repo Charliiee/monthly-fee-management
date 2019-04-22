@@ -5,7 +5,7 @@
       <payment
         v-for="payment in payments"
         :key="payment.id"
-        :payment="payment"
+        :payment="{ ...payment }"
         :active="selectedPayments.has(payment.id)"
         @click="updateSelectedPayments"
         >
