@@ -96,6 +96,9 @@ exports.addStudentPayments = functions.firestore
             // Create new payments to store in database
             if (!paymentsAlreadyAdded) {
               const amount = index === 0 ? 100 : 50
+              if (modality === 'garrinhas') {
+                amount = 70
+              }
 
               // getMonth() refers to months from 0 to 11
               for (var month = today.getMonth(); month <= 11; month++) {
