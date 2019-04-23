@@ -1,11 +1,13 @@
 <template>
   <q-layout view="lHh Lpr lff">
 
-    <q-header reveal elevated class="bg-primary text-white">
+    <q-header reveal class="bg-primary text-white">
       <q-toolbar>
         <q-toolbar-title>
-          <q-avatar icon="fas fa-hand-holding-usd" size="60px" />
-          Controle de mensalidades
+          <router-link to="/" class="text-white no-underscore">
+            <q-avatar icon="fas fa-hand-holding-usd" size="60px" />
+            Controle de mensalidades
+          </router-link>
         </q-toolbar-title>
 
         <q-tabs align="left">
@@ -39,5 +41,8 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+.no-underscore {
+  text-decoration: none;
+}
 </style>

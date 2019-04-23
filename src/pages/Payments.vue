@@ -1,9 +1,20 @@
 <template>
   <q-page>
+    <q-toolbar class="bg-primary text-white" inset>
+      <div class="col-grow">
+        <q-input dark dense standout type="search" v-model="filterText" input-class="text-right" placeholder="Pesquisar">
+          <template v-slot:append>
+            <q-icon v-if="filterText === ''" name="search" />
+              <q-icon v-else name="clear" class="cursor-pointer" @click="filterText = ''" />
+          </template>
+        </q-input>
+      </div>
+    </q-toolbar>
+
     <q-list bordered separator>
 
       <payment
-        v-for="payment in payments"
+        v-for="payment in filteredPayments"
         :key="payment.id"
         :payment="{ ...payment }"
         :active="selectedPayments.has(payment.id)"
@@ -38,6 +49,7 @@ export default {
   },
   data () {
     return {
+      filterText: '',
       selectedPayments: new Set([])
     }
   },
@@ -45,6 +57,13 @@ export default {
     this.$store.dispatch('payment/retrievePayments')
   },
   computed: {
+    filteredPayments () {
+      const text = this.filterText.toLowerCase()
+      return this.payments.filter(payment =>
+        payment.student.name.toLowerCase().indexOf(text) >= 0 ||
+        payment.modality.toLowerCase().indexOf(text) >= 0
+      )
+    },
     ...mapGetters('payment', ['payments'])
   },
   methods: {
