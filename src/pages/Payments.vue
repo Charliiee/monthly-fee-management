@@ -2,10 +2,10 @@
   <q-page>
     <q-toolbar class="bg-primary text-white" inset>
       <div class="col-grow">
-        <q-input dark dense standout type="search" v-model="filterText" input-class="text-right" placeholder="Pesquisar">
+        <q-input dark dense standout type="search" v-model="filterText" input-class="text-right placeholder-white" placeholder="Pesquisar">
           <template v-slot:append>
             <q-icon v-if="filterText === ''" name="search" />
-              <q-icon v-else name="clear" class="cursor-pointer" @click="filterText = ''" />
+            <q-icon v-else name="clear" class="cursor-pointer" @click="filterText = ''" />
           </template>
         </q-input>
       </div>
@@ -88,4 +88,7 @@ export default {
 </script>
 
 <style>
+.placeholder-white::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
 </style>
