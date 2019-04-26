@@ -151,6 +151,7 @@ module.exports = function (ctx) {
 
     cordova: {
       // id: 'org.cordova.quasar.app'
+      backButtonExit: true
     },
 
     electron: {
